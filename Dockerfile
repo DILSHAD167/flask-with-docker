@@ -1,11 +1,19 @@
-FROM ubuntu
+# Use official Python image (lightweight)
+FROM python:3.12-slim
 
-RUN apt update
-RUN apt install python3-pip -y
-RUN pip3 install flask
-
+# Set working directory inside container
 WORKDIR /app
 
-COPY . .
+# Copy requirements and install Flask
+COPY requirements.txt .
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0"]
+# Copy the app code
+COPY app.py .
+
+# Expose Flask port
+EXPOSE 5000
+
+# Command to run the app
+CMD ["python", "app.py"]
+
